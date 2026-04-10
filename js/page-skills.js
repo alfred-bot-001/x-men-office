@@ -8,11 +8,13 @@ function renderSkillsPage() {
   let skillGenerated = false;
 
   const workflowNodes = [
-    { id:'trigger', label:'触发条件', desc:'EDD_EXCESSIVE_FUND / 定期审查 / 手动触发', color:'border-blue-500/60 bg-blue-900/20' },
-    { id:'step1',   label:'Step 1: KYC 核验', desc:'检查项: ID有效性 / POA / PEP / Adverse Media\n通过 → 继续 | PEP命中 → 🔴 升级L3', color:'border-emerald-500/60 bg-emerald-900/20' },
-    { id:'step2',   label:'Step 2: SOF 核实', desc:'差异<10% → 通过 | 差异>10% → RFI | 无法核实 → 升级L2', color:'border-emerald-500/60 bg-emerald-900/20' },
-    { id:'step3',   label:'Step 3: OSINT 检查（3项）', desc:'姓名搜索 / 雇主核查 / 职业背景\n全部通过 → 继续 | 有发现 → 标注', color:'border-violet-500/60 bg-violet-900/20' },
-    { id:'step4',   label:'Step 4: 综合判断 & 输出', desc:'Approve / Reject / Pending RFI / Escalate', color:'border-amber-500/60 bg-amber-900/20' },
+    { id:'trigger', label:'触发识别', desc:'高风险评级 / 超额资金 / PEP / SSC国籍', color:'border-blue-500/60 bg-blue-900/20' },
+    { id:'kyc', label:'KYC 身份核验', desc:'PEP筛查 / Adverse Media / 身份验证', color:'border-emerald-500/60 bg-emerald-900/20' },
+    { id:'sof', label:'SOF/SOW 文件收集', desc:'资金来源 / 财富来源文件验证', color:'border-emerald-500/60 bg-emerald-900/20' },
+    { id:'osint', label:'OSINT 核查', desc:'开源情报调查 / 负面媒体监控', color:'border-violet-500/60 bg-violet-900/20' },
+    { id:'rfi', label:'RFI 沟通', desc:'信息补充请求 / 客户沟通跟踪', color:'border-cyan-500/60 bg-cyan-900/20' },
+    { id:'judge', label:'综合判断', desc:'批准 / 拒绝 / RFI待回复 / 上报', color:'border-amber-500/60 bg-amber-900/20' },
+    { id:'escalate', label:'上报路由', desc:'L2合规 / L3高风险 / L2 SSC团队', color:'border-red-500/60 bg-red-900/20' },
   ];
 
   let selectedNode = null;
@@ -124,10 +126,14 @@ function renderSkillsPage() {
           <div class="text-xs text-slate-400">skill.json 已写入配置库</div>
           <div class="bg-slate-800/60 rounded-xl p-4 text-left">
             <div class="text-xs font-mono text-slate-300 space-y-1">
-              <div><span class="text-blue-300">"skillId"</span>: <span class="text-amber-300">"EDD-KYC-Review-v2.3"</span>,</div>
-              <div><span class="text-blue-300">"steps"</span>: [<span class="text-emerald-300">4 nodes</span>],</div>
-              <div><span class="text-blue-300">"escalationRules"</span>: [<span class="text-emerald-300">5 rules</span>],</div>
-              <div><span class="text-blue-300">"sopVersion"</span>: <span class="text-amber-300">"v2.3"</span></div>
+              <div><span class="text-blue-300">"skillId"</span>: <span class="text-amber-300">"EDD-L1-Workflow-v2.3"</span>,</div>
+              <div><span class="text-blue-300">"steps"</span>: [<span class="text-emerald-300">'trigger','kyc','sof','osint','rfi','judge','escalate'</span>],</div>
+              <div><span class="text-blue-300">"escalationRules"</span>: [</div>
+              <div class="pl-4"><span class="text-slate-400">{ condition: '文件审批异常 || 复杂案例 || 金额差异', target: 'L2-EDD' },</span></div>
+              <div class="pl-4"><span class="text-slate-400">{ condition: 'PEP命中 || 负面媒体 || 高风险评级', target: 'L3-HRC' },</span></div>
+              <div class="pl-4"><span class="text-slate-400">{ condition: 'SSC国籍客户', target: 'L2-SSC' }</span></div>
+              <div>],</div>
+              <div><span class="text-blue-300">"sopVersion"</span>: <span class="text-amber-300">"Enhanced Due Diligence Program v2.3"</span></div>
             </div>
           </div>
           <button onclick="skillGenerated=false;document.getElementById('tab-content').innerHTML=tabContent()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-xs text-white transition-colors">重新生成</button>

@@ -17,10 +17,10 @@ function renderSidebar(activeHash) {
     <!-- Logo -->
     <div class="px-5 py-5 border-b border-slate-700/50">
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-sm font-bold text-white">AI</div>
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-sm font-bold text-white">X</div>
         <div>
-          <div class="text-sm font-semibold text-white leading-tight">合规 AI Agent</div>
-          <div class="text-xs text-slate-500">管理平台 v1.0</div>
+          <div class="text-sm font-semibold text-white leading-tight">X-Men Office</div>
+          <div class="text-xs text-slate-500">AI Agent 管理平台 v1.0</div>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@ function renderSidebar(activeHash) {
     </nav>
     <!-- Footer -->
     <div class="px-4 py-4 border-t border-slate-700/50">
-      <div class="text-xs text-slate-600 text-center">Compliance Ops Platform</div>
+      <div class="text-xs text-slate-600 text-center">X-Men Office</div>
       <div class="text-xs text-slate-700 text-center">Demo · 2026</div>
     </div>
   </div>`;

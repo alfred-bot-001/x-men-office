@@ -39,7 +39,7 @@ function renderWorklistPage() {
             <span class="text-xs ${labelColor[a.status]}">${labelMap[a.status]}</span>
           </div>
           <!-- Avatar -->
-          <div class="w-14 h-14 rounded-xl bg-slate-700/60 flex items-center justify-center text-3xl mb-3">${a.avatar}</div>
+          <div class="w-14 h-14 rounded-xl overflow-hidden mb-3">${avatarImg(a.avatar, 'w-14 h-14')}</div>
           <!-- Name + Level -->
           <div class="flex items-center gap-2 mb-1">
             <span class="text-sm font-semibold text-white">${a.name}</span>

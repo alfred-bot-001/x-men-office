@@ -10,9 +10,9 @@ function renderDashboardPage() {
   ];
 
   const agentWorkload = [
-    { name:'EDD-Agent-001', cases:28 },{ name:'EDD-Agent-002', cases:31 },
-    { name:'EDD-Agent-003', cases:12 },{ name:'EDD-Agent-004', cases:35 },
-    { name:'EDD-Agent-005', cases:29 },{ name:'EDD-Agent-006', cases:21 },
+    { name:'Namescreen-Agent-001', cases:28 },{ name:'Namescreen-Agent-002', cases:31 },
+    { name:'FCI-Agent-001', cases:12 },{ name:'FCI-Agent-002', cases:35 },
+    { name:'EDD-Agent-001', cases:29 },{ name:'EDD-Agent-002', cases:21 },
   ];
 
   const recentCases = mockRecentCases;
@@ -90,10 +90,10 @@ function renderDashboardPage() {
     <div class="bg-slate-800/60 rounded-xl border border-emerald-700/30 p-4 flex items-center gap-4">
       <div class="w-10 h-10 rounded-full bg-emerald-900/40 flex items-center justify-center text-xl flex-shrink-0">🔓</div>
       <div class="flex-1">
-        <div class="text-sm font-semibold text-emerald-300">Skip-L2 解锁状态</div>
-        <div class="text-xs text-slate-400 mt-0.5">近3个月 QA 准确率：<span class="text-emerald-400 font-semibold">92.1%</span> &nbsp;|&nbsp; 阈值：92% &nbsp;|&nbsp; 已满足条件 ✅</div>
+        <div class="text-sm font-semibold text-emerald-300">FCI Pre-Check 自动关闭率</div>
+        <div class="text-xs text-slate-400 mt-0.5">当前自动关闭率：<span class="text-emerald-400 font-semibold">38.5%</span> &nbsp;|&nbsp; 目标阈值：35% &nbsp;|&nbsp; 已超过阈值 ✅</div>
       </div>
-      <div class="text-xs text-emerald-400 bg-emerald-900/30 border border-emerald-700/40 px-3 py-1.5 rounded-lg">已解锁</div>
+      <div class="text-xs text-emerald-400 bg-emerald-900/30 border border-emerald-700/40 px-3 py-1.5 rounded-lg">已启用</div>
     </div>
 
     <!-- Recent cases table -->
@@ -143,9 +143,9 @@ function renderDashboardPage() {
       new Chart(pieCtx, {
         type:'doughnut',
         data: {
-          labels:['L1 自动完成','升级 L2','升级 L3','升级 L4 MLRO'],
-          datasets:[{ data:[73,18,7,2],
-            backgroundColor:['#22c55e','#f59e0b','#f97316','#ef4444'],
+          labels:['L1 Cases','L2 Escalated','L3 High Risk','L4 MLRO'],
+          datasets:[{ data:[65,20,10,5],
+            backgroundColor:['#10b981','#8b5cf6','#f59e0b','#ef4444'],
             borderColor:'#1e293b', borderWidth:2 }]
         },
         options:{ plugins:{ legend:{ position:'right', labels:{ color:'#94a3b8', font:{size:10}, boxWidth:10 }}}, cutout:'65%' }

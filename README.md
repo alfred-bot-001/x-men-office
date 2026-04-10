@@ -1,4 +1,4 @@
-# Compliance AI Agent Management Platform - Demo
+# X-Men Project — AI Agent Management Platform Demo
 
 ## 技术栈
 - 纯 HTML5 + CSS3 + JavaScript (ES6+)
