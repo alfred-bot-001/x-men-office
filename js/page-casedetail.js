@@ -6,6 +6,7 @@ function renderCaseDetailPage(caseId) {
   let step4Shown = false;
   let ratings = 0;
   let ratingSubmitted = false;
+  let stepVerdicts = {};  // { 'EDD-20260410-0892_0': 'correct', ... }
 
   // ---- lookup agents from global mockAgents ----
   const eddAgent = mockAgents.find(a => a.name === 'Namescreen-Agent-002') || mockAgents[0];
@@ -70,6 +71,8 @@ function renderCaseDetailPage(caseId) {
     steps.forEach((s, i) => {
       const last = i === steps.length - 1;
       const opacity = s.pending && !showOSINT ? 'opacity-40' : '';
+      const vKey = activeCaseId + '_' + i;
+      const verdict = stepVerdicts[vKey];
       h += `<div class="flex gap-3 ${opacity}">`;
       // icon column with connector line
       h += `<div class="flex flex-col items-center">`;
@@ -80,7 +83,24 @@ function renderCaseDetailPage(caseId) {
       h += `</div>`;
       // content
       h += `<div class="flex-1 ${last ? '' : 'pb-5'}">`;
-      h += `<div class="text-sm font-semibold ${s.color}">${s.label}</div>`;
+      h += `<div class="flex items-center gap-2">`;
+      h += `<span class="text-sm font-semibold ${s.color}">${s.label}</span>`;
+      // review buttons (only for done or in-progress steps, not pending)
+      if (s.done || s.spinning) {
+        h += `<div class="flex items-center gap-1 ml-auto">`;
+        if (verdict === 'correct') {
+          h += `<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-emerald-900/50 text-emerald-400 text-[10px] font-medium">✓ 正确</span>`;
+          h += `<button onclick="reviewStep('${vKey}',null)" class="text-[10px] text-gray-500 hover:text-gray-300">撤回</button>`;
+        } else if (verdict === 'incorrect') {
+          h += `<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-red-900/50 text-red-400 text-[10px] font-medium">✗ 错误</span>`;
+          h += `<button onclick="reviewStep('${vKey}',null)" class="text-[10px] text-gray-500 hover:text-gray-300">撤回</button>`;
+        } else {
+          h += `<button onclick="reviewStep('${vKey}','correct')" class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-emerald-900/30 text-emerald-400 hover:bg-emerald-900/60 transition-colors" title="Agent判断正确">✓</button>`;
+          h += `<button onclick="reviewStep('${vKey}','incorrect')" class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-900/30 text-red-400 hover:bg-red-900/60 transition-colors" title="Agent判断错误">✗</button>`;
+        }
+        h += `</div>`;
+      }
+      h += `</div>`;
       h += `<ul class="mt-1 space-y-0.5">`;
       s.items.forEach(it => { h += `<li class="text-xs text-gray-400 flex gap-1.5"><span class="text-gray-600 mt-0.5">\u2022</span><span>${it}</span></li>`; });
       h += `</ul></div></div>`;
@@ -124,6 +144,10 @@ function renderCaseDetailPage(caseId) {
     h += `<div class="bg-gray-800 rounded-xl p-4 border border-gray-700/60">`;
     h += `<div class="text-xs font-semibold text-gray-300 mb-3">\u2B50 Agent \u5DE5\u4F5C\u8BC4\u5206</div>`;
     h += `<div id="rating-area">${ratingHtml()}</div></div>`;
+
+    // accuracy review summary
+    h += accuracySummaryHtml();
+
     h += `</div>`;
     return h;
   }
@@ -133,6 +157,29 @@ function renderCaseDetailPage(caseId) {
     let h = `<div class="flex justify-center gap-1 mb-3">`;
     for (let i = 1; i <= 5; i++) h += `<button onclick="setRating(${i})" class="text-2xl transition-transform hover:scale-125 ${i <= ratings ? 'text-amber-400' : 'text-gray-600'}">\u2605</button>`;
     h += `</div><button onclick="submitRating()" class="w-full py-2 rounded-lg text-xs font-medium bg-gray-700 hover:bg-gray-600 text-white transition-colors">\u63D0\u4EA4\u8BC4\u5206</button>`;
+    return h;
+  }
+
+  function accuracySummaryHtml() {
+    const entries = Object.entries(stepVerdicts).filter(([k]) => k.startsWith(activeCaseId));
+    if (entries.length === 0) return '';
+    const correct = entries.filter(([,v]) => v === 'correct').length;
+    const incorrect = entries.filter(([,v]) => v === 'incorrect').length;
+    const total = correct + incorrect;
+    const pct = total > 0 ? Math.round(correct / total * 100) : 0;
+    const barColor = pct >= 80 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-red-500';
+    let h = `<div class="bg-gray-800 rounded-xl p-4 border border-gray-700/60">`;
+    h += `<div class="text-xs font-semibold text-gray-300 mb-3">📊 步骤准确度审核</div>`;
+    h += `<div class="flex items-center gap-3 mb-2">`;
+    h += `<span class="text-2xl font-bold ${pct >= 80 ? 'text-emerald-400' : pct >= 50 ? 'text-amber-400' : 'text-red-400'}">${pct}%</span>`;
+    h += `<div class="flex-1">`;
+    h += `<div class="text-[10px] text-gray-500 mb-1">已审核 ${total} / ${c.steps.length} 步</div>`;
+    h += `<div class="w-full bg-gray-700 rounded-full h-1.5"><div class="${barColor} h-1.5 rounded-full transition-all" style="width:${pct}%"></div></div>`;
+    h += `</div></div>`;
+    h += `<div class="flex gap-3 text-[11px]">`;
+    h += `<span class="text-emerald-400">✓ 正确 ${correct}</span>`;
+    h += `<span class="text-red-400">✗ 错误 ${incorrect}</span>`;
+    h += `</div></div>`;
     return h;
   }
 
@@ -179,5 +226,11 @@ function renderCaseDetailPage(caseId) {
     ratingSubmitted = true;
     document.getElementById('rating-area').innerHTML = ratingHtml();
     showToast(`\u5DF2\u63D0\u4EA4 ${ratings} \u661F\u8BC4\u5206 \u2B50`);
+  };
+
+  window.reviewStep = function(key, verdict) {
+    if (verdict === null) { delete stepVerdicts[key]; } else { stepVerdicts[key] = verdict; }
+    document.getElementById('chain-content').innerHTML = chainHtml(step4Shown);
+    document.getElementById('right-panel').innerHTML = rightHtml();
   };
 }
