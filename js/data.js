@@ -44,14 +44,14 @@ const mockSkills = [
 ];
 
 const mockRecentCases = [
-  { id:'EDD-20260410-0892', agent:'Namescreen-Agent-002', skill:'EDD-SOF&SOW-Skill',               duration:'18 min', result:'Pending RFI',  rating:4, escalated:false },
-  { id:'EDD-20260410-0765', agent:'EDD-Agent-002',        skill:'EDD-KYC-Skill',                    duration:'9 min',  result:'Escalated L3', rating:5, escalated:true  },
-  { id:'EDD-20260410-0633', agent:'Namescreen-Agent-001', skill:'EDD-Trigger-Skill',                duration:'5 min',  result:'Approved',     rating:5, escalated:false },
-  { id:'EDD-20260410-0744', agent:'EDD-Agent-001',        skill:'EDD-OSINT-Skill',                  duration:'22 min', result:'Approved',     rating:4, escalated:false },
-  { id:'FCI-20260410-1034', agent:'FCI-Agent-002',        skill:'FCI-Full-Review-Skill',             duration:'45 min', result:'Retain & Monitor', rating:5, escalated:false },
-  { id:'FCI-20260410-0580', agent:'FCI-Agent-001',        skill:'FCI-PreCheck-Skill',                duration:'2 min',  result:'Auto-Closed',  rating:5, escalated:false },
-  { id:'FCI-20260410-0512', agent:'FCI-Agent-001',        skill:'FCI-Initial-Investigation-Skill',   duration:'15 min', result:'Escalated Full Review', rating:4, escalated:true  },
-  { id:'EDD-20260410-0488', agent:'Namescreen-Agent-001', skill:'EDD-RFI-Skill',                    duration:'11 min', result:'RFI Sent',     rating:4, escalated:false },
-  { id:'FCI-20260410-0399', agent:'FCI-Agent-002',        skill:'FCI-OnChain-Analysis-Skill',        duration:'31 min', result:'STR Filed',    rating:5, escalated:true  },
-  { id:'EDD-20260410-0355', agent:'EDD-Agent-001',        skill:'EDD-KYC-Skill',                    duration:'14 min', result:'Escalated L2', rating:4, escalated:true  },
+  { id:'EDD-20260410-0892', type:'EDD', agent:'Namescreen-Agent-002', skill:'EDD-SOF&SOW-Skill',             currentStep:'SOF/SOW 文件收集',       startTime:'2026-04-10 09:42', endTime:null,              result:'Pending RFI',           rating:4, escalated:false },
+  { id:'EDD-20260410-0765', type:'EDD', agent:'EDD-Agent-002',        skill:'EDD-KYC-Skill',                  currentStep:'综合判断 & 上报路由',    startTime:'2026-04-10 09:15', endTime:'2026-04-10 09:24', result:'Escalated L3',          rating:5, escalated:true  },
+  { id:'EDD-20260410-0633', type:'EDD', agent:'Namescreen-Agent-001', skill:'EDD-Trigger-Skill',              currentStep:'已完成',                 startTime:'2026-04-10 08:50', endTime:'2026-04-10 08:55', result:'Approved',              rating:5, escalated:false },
+  { id:'EDD-20260410-0744', type:'EDD', agent:'EDD-Agent-001',        skill:'EDD-OSINT-Skill',                currentStep:'已完成',                 startTime:'2026-04-10 08:30', endTime:'2026-04-10 08:52', result:'Approved',              rating:4, escalated:false },
+  { id:'FCI-20260410-1034', type:'FCI', agent:'FCI-Agent-002',        skill:'FCI-Full-Review-Skill',           currentStep:'Phase 3: Full Review',   startTime:'2026-04-10 08:15', endTime:null,              result:'Retain & Monitor',      rating:5, escalated:false },
+  { id:'FCI-20260410-0580', type:'FCI', agent:'FCI-Agent-001',        skill:'FCI-PreCheck-Skill',              currentStep:'已完成',                 startTime:'2026-04-10 08:00', endTime:'2026-04-10 08:02', result:'Auto-Closed',           rating:5, escalated:false },
+  { id:'FCI-20260410-0512', type:'FCI', agent:'FCI-Agent-001',        skill:'FCI-Initial-Investigation-Skill', currentStep:'Phase 2: Investigation', startTime:'2026-04-10 07:40', endTime:'2026-04-10 07:55', result:'Escalated Full Review', rating:4, escalated:true  },
+  { id:'EDD-20260410-0488', type:'EDD', agent:'Namescreen-Agent-001', skill:'EDD-RFI-Skill',                  currentStep:'已完成',                 startTime:'2026-04-10 07:20', endTime:'2026-04-10 07:31', result:'RFI Sent',              rating:4, escalated:false },
+  { id:'FCI-20260410-0399', type:'FCI', agent:'FCI-Agent-002',        skill:'FCI-OnChain-Analysis-Skill',      currentStep:'已完成',                 startTime:'2026-04-10 06:50', endTime:'2026-04-10 07:21', result:'STR Filed',             rating:5, escalated:true  },
+  { id:'EDD-20260410-0355', type:'EDD', agent:'EDD-Agent-001',        skill:'EDD-KYC-Skill',                  currentStep:'综合判断 & 上报路由',    startTime:'2026-04-10 06:30', endTime:'2026-04-10 06:44', result:'Escalated L2',          rating:4, escalated:true  },
 ];

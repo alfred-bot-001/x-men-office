@@ -4,7 +4,7 @@
 const NAV_ITEMS = [
   { hash:'/', label:'Agent 管理', icon:'🤖', badge:null },
   { hash:'/worklist', label:'工作列表', icon:'📋', badge:6 },
-  { hash:'/casedetail', label:'工作详情', icon:'🔍', badge:null },
+  { hash:'/casedetail', label:'Case 列表', icon:'📑', badge:null },
   { hash:'/dashboard', label:'工作量 Dashboard', icon:'📊', badge:null },
   { hash:'/skills', label:'Skill 管理', icon:'⚙️', badge:null },
 ];
