@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>合规 AI Agent 管理平台 — Demo</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: #0f172a; color: #e2e8f0; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; overflow: hidden; }
+    html, body { height: 100%; }
+    #app { display: flex; height: 100vh; overflow: hidden; }
+    #sidebar { width: 220px; flex-shrink: 0; background: #1e293b; border-right: 1px solid rgba(51,65,85,0.5); }
+    #main { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+    #topbar { flex-shrink: 0; height: 44px; border-bottom: 1px solid rgba(51,65,85,0.5); display: flex; align-items: center; padding: 0 20px; gap: 8px; background: rgba(15,23,42,0.8); }
+    #page-content { flex: 1; overflow: hidden; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.4); }
+    a { text-decoration: none; }
+    .animate-pulse { animation: pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; }
+    .animate-spin { animation: spin 1s linear infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    .transition-all { transition: all 0.15s ease; }
+    .transition-colors { transition: color 0.15s, background-color 0.15s, border-color 0.15s; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            slate: { 850: '#172033' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+<div id="app">
+  <div id="sidebar"></div>
+  <div id="main">
+    <div id="topbar">
+      <span class="text-xs text-slate-500">合规 AI Agent 管理平台</span>
+      <div class="w-1 h-1 bg-slate-700 rounded-full"></div>
+      <span class="text-xs text-slate-600">v1.0.0-demo</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+        <div style="display:flex;align-items:center;gap:6px" class="text-xs text-slate-500">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" style="width:6px;height:6px;border-radius:50%;background:#34d399;display:inline-block"></span>
+          6 Agents Online
+        </div>
+        <div style="width:1px;height:16px;background:#334155"></div>
+        <span id="clock" class="text-xs text-slate-500"></span>
+      </div>
+    </div>
+    <div id="page-content" style="flex:1;overflow:hidden"></div>
+  </div>
+</div>
+
+<!-- All scripts -->
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/sidebar.js"></script>
+<script src="js/page-agents.js"></script>
+<script src="js/page-worklist.js"></script>
+<script src="js/page-casedetail.js"></script>
+<script src="js/page-dashboard.js"></script>
+<script src="js/page-skills.js"></script>
+<script src="js/router.js"></script>
+<script>
+// Clock
+function updateClock() {
+  const el = document.getElementById('clock');
+  if (el) el.textContent = new Date().toLocaleString('zh-CN',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Router
+const router = new Router({
+  '/':          () => { renderSidebar('/');          renderAgentsPage(); },
+  '/worklist':  () => { renderSidebar('/worklist');  renderWorklistPage(); },
+  '/casedetail':() => { renderSidebar('/casedetail');
+    const params = new URLSearchParams(window.location.hash.replace(/^#\/casedetail\??/,''));
+    renderCaseDetailPage(params.get('case') || 'CASE-20260410-0892'); },
+  '/dashboard': () => { renderSidebar('/dashboard'); renderDashboardPage(); },
+  '/skills':    () => { renderSidebar('/skills');    renderSkillsPage(); },
+});
+
+// Handle casedetail with query params
+const origResolve = router.resolve.bind(router);
+router.resolve = function() {
+  const hash = window.location.hash.replace('#','') || '/';
+  const base = hash.split('?')[0];
+  if (this.routes[base]) { this.routes[base](); return; }
+  origResolve();
+};
+router.resolve();
+</script>
+</body>
+</html>
